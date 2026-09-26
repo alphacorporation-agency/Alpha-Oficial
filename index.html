@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alpha Corporation — sites, lojas online e automação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121212; --bg-2:#191919; --bg-3:#1E1E1E; --ink:#EDEAE3; --ink-dim:#A7A39A;
+    --gold:#D4A94A; --teal:#3FA391; --line:#2A2A2A;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  header{position:sticky;top:env(safe-area-inset-top,0px);background:rgba(18,18,18,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10;}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
+  .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.02em;}
+  .brand span{color:var(--gold);}
+  nav a{color:var(--ink-dim);text-decoration:none;font-size:.92rem;margin-left:22px;transition:color .15s;}
+  nav a:hover{color:var(--ink);}
+  .navlinks{display:flex;align-items:center;}
+  @media (max-width:600px){ .navlinks a:not(.btn){display:none;} }
+
+  .hero{position:relative;padding:88px 0 64px;opacity:0;animation:rise .7s ease-out forwards;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:-40px -20px auto auto;width:380px;height:380px;
+    background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
+    background-size:22px 22px;
+    -webkit-mask-image:radial-gradient(circle at 70% 30%, black, transparent 70%);
+    mask-image:radial-gradient(circle at 70% 30%, black, transparent 70%);
+    pointer-events:none;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block;box-shadow:0 0 0 3px rgba(63,163,145,.18);}
+  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 20px;max-width:15ch;}
+  .sub{color:var(--ink-dim);font-size:1.08rem;max-width:54ch;margin:0 0 32px;}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{display:inline-block;padding:13px 22px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.95rem;transition:.15s;}
+  .btn-primary{background:var(--gold);color:#161616;}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);}
+  .btn-primary:hover{background:#e2ba63;}
+  .btn-ghost:hover{border-color:var(--ink-dim);}
+
+  section{padding:56px 0;border-top:1px solid var(--line);}
+  .eyebrow-k{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gold);}
+  h2{font-family:'Space Grotesk',sans-serif;font-size:1.55rem;letter-spacing:-.01em;margin:8px 0 8px;}
+  .lede{color:var(--ink-dim);margin:0 0 36px;max-width:58ch;}
+
+  .services{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  @media (max-width:700px){ .services{grid-template-columns:1fr;} }
+  .svc{background:var(--bg-2);padding:28px 22px;transition:background .18s;}
+  .svc:hover{background:var(--bg-3);}
+  .svc .k{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--teal);display:block;margin-bottom:10px;}
+  .svc h3{font-size:1.05rem;margin:0 0 8px;font-weight:600;}
+  .svc p{color:var(--ink-dim);font-size:.92rem;margin:0;}
+
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+  @media (max-width:760px){ .steps{grid-template-columns:1fr 1fr;} }
+  @media (max-width:460px){ .steps{grid-template-columns:1fr;} }
+  .step{border-left:2px solid var(--line);padding-left:16px;}
+  .step .n{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.85rem;}
+  .step h4{margin:6px 0 6px;font-size:.98rem;font-weight:600;}
+  .step p{margin:0;color:var(--ink-dim);font-size:.87rem;}
+
+  .demo-wrap{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;}
+  .demo-text{flex:1 1 260px;}
+  .demo-text ul{color:var(--ink-dim);padding-left:18px;margin:16px 0 0;font-size:.94rem;}
+  .demo-text li{margin-bottom:8px;}
+  .phone{flex:0 0 300px;background:var(--bg-2);border:1px solid var(--line);border-radius:16px;overflow:hidden;width:100%;max-width:300px;}
+  .phone-bar{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--ink-dim);}
+  .phone-bar .av{width:26px;height:26px;border-radius:50%;background:var(--teal);flex:none;}
+  .chat{padding:14px;min-height:230px;display:flex;flex-direction:column;gap:9px;justify-content:flex-end;}
+  .bubble{max-width:80%;padding:8px 12px;border-radius:12px;font-size:.83rem;opacity:0;transform:translateY(6px);animation:pop .35s ease forwards;}
+  @keyframes pop{to{opacity:1;transform:translateY(0);}}
+  .bubble.user{align-self:flex-end;background:var(--gold);color:#161616;border-bottom-right-radius:3px;}
+  .bubble.bot{align-self:flex-start;background:var(--bg-3);border:1px solid var(--line);border-bottom-left-radius:3px;}
+  .typing{align-self:flex-start;display:flex;gap:4px;padding:9px 12px;background:var(--bg-3);border:1px solid var(--line);border-radius:12px;border-bottom-left-radius:3px;}
+  .typing i{width:5px;height:5px;border-radius:50%;background:var(--ink-dim);display:block;animation:blink 1s infinite ease-in-out;}
+  .typing i:nth-child(2){animation-delay:.15s;} .typing i:nth-child(3){animation-delay:.3s;}
+  @keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:1;}}
+
+  .case{display:flex;gap:32px;align-items:center;flex-wrap:wrap;}
+  .mock{flex:1 1 280px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:260px;}
+  .mock-bar{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);}
+  .mock-bar i{width:9px;height:9px;border-radius:50%;background:#3a3a3a;display:block;}
+  .mock-body{padding:16px;}
+  .chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+  .chip{font-size:.72rem;color:var(--ink-dim);border:1px solid var(--line);padding:4px 9px;border-radius:99px;}
+  .mock-card{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:8px;font-size:.8rem;color:var(--ink-dim);}
+  .mock-card b{color:var(--ink);}
+  .case-text{flex:1 1 300px;}
+  .case-text ul{color:var(--ink-dim);padding-left:18px;margin:16px 0 20px;font-size:.94rem;}
+  .case-text li{margin-bottom:6px;}
+  .link{color:var(--teal);}
+
+  .faq{border-top:1px solid var(--line);}
+  .faq-item{padding:18px 0;border-bottom:1px solid var(--line);}
+  .faq-item summary{cursor:pointer;font-weight:600;font-size:.98rem;list-style:none;display:flex;justify-content:space-between;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+';color:var(--gold);font-size:1.2rem;}
+  .faq-item[open] summary::after{content:'–';}
+  .faq-item p{color:var(--ink-dim);margin:10px 0 0;font-size:.92rem;}
+
+  footer{padding:48px 0 64px;border-top:1px solid var(--line);}
+  .contact-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px;}
+  .foot-note{color:var(--ink-dim);font-size:.85rem;margin-top:36px;}
+
+  .lead-form{display:grid;gap:14px;max-width:480px;margin-top:8px;}
+  .lead-form label{font-size:.82rem;color:var(--ink-dim);display:block;margin-bottom:6px;}
+  .lead-form input,.lead-form select,.lead-form textarea{
+    width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;
+    padding:11px 12px;color:var(--ink);font-family:'Inter',sans-serif;font-size:.94rem;}
+  .lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .lead-form textarea{resize:vertical;min-height:80px;}
+  .lead-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:520px){ .lead-row2{grid-template-columns:1fr;} }
+  .result-box{display:none;margin-top:18px;padding:16px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;}
+  .result-box.show{display:block;}
+  .result-box p{color:var(--ink-dim);font-size:.86rem;margin:0 0 12px;}
+  .result-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){ --bg:#F7F5F0; --bg-2:#EFEBE2; --bg-3:#E7E1D2; --ink:#1B1A17; --ink-dim:#655F52; --line:#DDD7C8; }
+  }
+  :root[data-theme="dark"]{ --bg:#121212; --bg-2:#191919; --bg-3:#1E1E1E; --ink:#EDEAE3; --ink-dim:#A7A39A; --line:#2A2A2A; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">Alpha<span>.</span>Corporation</div>
+    <div class="navlinks">
+      <a href="#servicos">Serviços</a>
+      <a href="#processo">Processo</a>
+      <a href="#automacao">Automação</a>
+      <a href="#case">Case</a>
+      <a class="btn btn-primary" style="padding:8px 16px;font-size:.85rem;" href="#contato">Falar agora</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="tag"><span class="dot"></span>disponível para novos projetos</span>
+    <h1>Seu site vende sozinho. Seu WhatsApp responde sozinho.</h1>
+    <p class="sub">A Alpha Corporation cria e reforma sites, monta lojas online e automatiza o atendimento no WhatsApp — pra você vender mais sem contratar mais gente pra atender.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#contato">Pedir diagnóstico grátis</a>
+      <a class="btn btn-ghost" href="https://instagram.com/alpha.agency.corporation">@alpha.agency.corporation</a>
+    </div>
+  </div>
+</section>
+
+<section id="servicos">
+  <div class="wrap">
+    <span class="eyebrow-k">serviços</span>
+    <h2>O que fazemos</h2>
+    <p class="lede">Três frentes, um objetivo: tirar fricção entre o cliente e a compra.</p>
+    <div class="services">
+      <div class="svc">
+        <span class="k">criação</span>
+        <h3>Sites e lojas do zero</h3>
+        <p>Site institucional ou ecommerce completo, rápido e pronto pra converter visita em venda.</p>
+      </div>
+      <div class="svc">
+        <span class="k">reforma</span>
+        <h3>Reforma de site existente</h3>
+        <p>Seu site já existe mas não vende? Reestruturamos design, velocidade e checkout.</p>
+      </div>
+      <div class="svc">
+        <span class="k">automação</span>
+        <h3>Chatbot no WhatsApp</h3>
+        <p>Atendimento automático que responde, qualifica e agenda — 24h, sem depender de alguém digitando.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="processo">
+  <div class="wrap">
+    <span class="eyebrow-k">como trabalhamos</span>
+    <h2>Do primeiro contato à entrega</h2>
+    <p class="lede">Um processo direto, sem surpresa no meio do caminho.</p>
+    <div class="steps">
+      <div class="step"><span class="n">01</span><h4>Diagnóstico</h4><p>Analisamos seu site e atendimento atual e mostramos onde você perde venda.</p></div>
+      <div class="step"><span class="n">02</span><h4>Proposta</h4><p>Escopo, prazo e valor fechados antes de começar — sem custo escondido.</p></div>
+      <div class="step"><span class="n">03</span><h4>Produção</h4><p>Construção do site, loja ou bot com checkpoints pra você acompanhar.</p></div>
+      <div class="step"><span class="n">04</span><h4>Entrega e suporte</h4><p>Publicação, ajustes finais e suporte contínuo depois do go-live.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="automacao">
+  <div class="wrap">
+    <span class="eyebrow-k">na prática</span>
+    <h2>Assim funciona um atendimento automático</h2>
+    <div class="demo-wrap">
+      <div class="demo-text">
+        <p class="lede" style="margin-bottom:0;">Uma simulação real de como o bot responde no WhatsApp — sem intervenção humana.</p>
+        <ul>
+          <li>Responde dúvidas frequentes na hora</li>
+          <li>Qualifica o cliente antes de passar pra um humano</li>
+          <li>Agenda horário ou envia link de pagamento</li>
+          <li>Funciona 24h, inclusive fim de semana</li>
+        </ul>
+      </div>
+      <div class="phone">
+        <div class="phone-bar"><span class="av"></span> Atendimento — online</div>
+        <div class="chat" id="chat"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="case">
+  <div class="wrap">
+    <span class="eyebrow-k">case real</span>
+    <h2>Alpha Achados</h2>
+    <p class="lede">Plataforma de curadoria de ofertas com afiliados, categorias e assinatura VIP — construída e operada pela Alpha Corporation.</p>
+    <div class="case">
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i></div>
+        <div class="mock-body">
+          <div class="chip-row">
+            <span class="chip">Mercado Livre</span><span class="chip">Cursos</span><span class="chip">Beleza</span><span class="chip">Renda extra</span>
+          </div>
+          <div class="mock-card"><b>Achado do dia</b> — grade de ofertas por categoria</div>
+          <div class="mock-card"><b>Alpha VIP</b> — planos mensal (R$ 9,90) e anual (R$ 79,90)</div>
+        </div>
+      </div>
+      <div class="case-text">
+        <ul>
+          <li>Catálogo filtrável por categoria, com links diretos de afiliado</li>
+          <li>Modelo de assinatura recorrente (VIP mensal e anual)</li>
+          <li>Site 100% funcional, publicado e gerando comissão</li>
+        </ul>
+        <a class="link" href="https://alphacorporation-agency.github.io/Alpha-Achados/">Ver o site ao vivo →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <span class="eyebrow-k">perguntas comuns</span>
+    <h2>Antes de você perguntar</h2>
+    <details class="faq-item"><summary>Quanto tempo leva um projeto?</summary><p>Um site simples fica pronto em poucos dias; lojas online e bots mais elaborados variam conforme o escopo — isso fica combinado na proposta.</p></details>
+    <details class="faq-item"><summary>Preciso ter site pra ter o chatbot?</summary><p>Não. O chatbot roda direto no seu WhatsApp, com ou sem site.</p></details>
+    <details class="faq-item"><summary>Vocês dão suporte depois da entrega?</summary><p>Sim, todo projeto sai com um período de suporte incluso para ajustes.</p></details>
+  </div>
+</section>
+
+<footer id="contato">
+  <div class="wrap">
+    <span class="eyebrow-k">contato</span>
+    <h2>Vamos conversar</h2>
+    <p class="lede">Preenche rapidinho — eu monto a mensagem pra você e você escolhe como manda.</p>
+
+    <form class="lead-form" id="leadForm">
+      <div class="lead-row2">
+        <div>
+          <label for="l-name">Seu nome</label>
+          <input id="l-name" type="text" required placeholder="Ex: Carla">
+        </div>
+        <div>
+          <label for="l-biz">Negócio / Instagram</label>
+          <input id="l-biz" type="text" required placeholder="Ex: @loja_da_carla">
+        </div>
+      </div>
+      <div>
+        <label for="l-need">O que você precisa?</label>
+        <select id="l-need">
+          <option>Criar um site ou loja online</option>
+          <option>Reformar um site que já existe</option>
+          <option>Automatizar atendimento no WhatsApp</option>
+          <option>Ainda não sei, quero um diagnóstico</option>
+        </select>
+      </div>
+      <div>
+        <label for="l-msg">Conta um pouco mais (opcional)</label>
+        <textarea id="l-msg" placeholder="Ex: meu site é lento e eu perco muita venda pelo WhatsApp"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-self:start;">Gerar minha mensagem</button>
+    </form>
+
+    <div class="result-box" id="resultBox">
+      <p id="resultText"></p>
+      <div class="result-actions">
+        <button class="btn btn-primary" onclick="copyResult()">Copiar mensagem</button>
+        <a class="btn btn-ghost" id="mailLink" href="#" >Enviar por e-mail</a>
+        <a class="btn btn-ghost" href="https://instagram.com/alpha.agency.corporation">Colar no Instagram</a>
+      </div>
+    </div>
+
+    <p class="foot-note" id="copy-hint" style="min-height:1.2em;"></p>
+    <p class="foot-note">Alpha Corporation — sites, ecommerce e automação de atendimento · equipe.alpha.corporation@gmail.com</p>
+  </div>
+</footer>
+
+<script>
+var lastMessage = '';
+document.getElementById('leadForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = document.getElementById('l-name').value.trim();
+  var biz = document.getElementById('l-biz').value.trim();
+  var need = document.getElementById('l-need').value;
+  var msg = document.getElementById('l-msg').value.trim();
+  lastMessage = 'Oi, Alpha Corporation! Meu nome é ' + name + ' (' + biz + ').\n' +
+    'Preciso de: ' + need + '.' +
+    (msg ? ('\nDetalhe: ' + msg) : '') +
+    '\n\nPode me passar um diagnóstico e um valor?';
+  document.getElementById('resultText').textContent = lastMessage;
+  document.getElementById('resultBox').classList.add('show');
+  var subject = encodeURIComponent('Pedido de diagnóstico — ' + biz);
+  document.getElementById('mailLink').href = 'mailto:equipe.alpha.corporation@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(lastMessage);
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'center'});
+});
+function copyResult(){
+  var hint = document.getElementById('copy-hint');
+  function ok(){ if(hint){ hint.textContent = 'Mensagem copiada — cole no WhatsApp, Instagram ou e-mail.'; } }
+  function fallback(){
+    try{
+      var ta = document.createElement('textarea');
+      ta.value = lastMessage; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta); ok();
+    }catch(e){ if(hint){ hint.textContent = 'Não consegui copiar automaticamente — selecione o texto acima manualmente.'; } }
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastMessage).then(ok).catch(fallback);
+  } else { fallback(); }
+}
+function copyEmail(el){
+  var email = 'equipe.alpha.corporation@gmail.com';
+  var hint = document.getElementById('copy-hint');
+  function ok(){
+    var original = el.textContent;
+    el.textContent = 'E-mail copiado ✓';
+    if(hint){ hint.textContent = 'Cole em qualquer app de e-mail ou mensagem: ' + email; }
+    setTimeout(function(){ el.textContent = original; }, 2200);
+  }
+  function fallback(){
+    try{
+      var ta = document.createElement('textarea');
+      ta.value = email; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok();
+    }catch(e){
+      window.location.href = 'mailto:' + email;
+    }
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(email).then(ok).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+(function(){
+  var chat = document.getElementById('chat');
+  var script = [
+    {who:'user', text:'Oi, vocês ainda têm o kit disponível?'},
+    {who:'bot', text:'Oi! Sim, temos em estoque 🙂 Quer que eu te envie o valor e as formas de pagamento?'},
+    {who:'user', text:'Quero sim'},
+    {who:'bot', text:'R$ 149,90 à vista ou em até 3x. Posso já reservar o seu e te enviar o link de pagamento?'}
+  ];
+  var i = 0;
+  function typingBubble(){
+    var t = document.createElement('div');
+    t.className = 'typing';
+    t.innerHTML = '<i></i><i></i><i></i>';
+    return t;
+  }
+  function next(){
+    if(i >= script.length){ i = 0; chat.innerHTML=''; setTimeout(next, 1200); return; }
+    var msg = script[i];
+    if(msg.who === 'bot'){
+      var t = typingBubble();
+      chat.appendChild(t);
+      chat.scrollTop = chat.scrollHeight;
+      setTimeout(function(){
+        t.remove();
+        var b = document.createElement('div');
+        b.className = 'bubble bot';
+        b.textContent = msg.text;
+        chat.appendChild(b);
+        chat.scrollTop = chat.scrollHeight;
+        i++;
+        setTimeout(next, 1400);
+      }, 900);
+    } else {
+      var b = document.createElement('div');
+      b.className = 'bubble user';
+      b.textContent = msg.text;
+      chat.appendChild(b);
+      chat.scrollTop = chat.scrollHeight;
+      i++;
+      setTimeout(next, 900);
+    }
+  }
+  next();
+})();
+</script>
+
+</body>
+</html>
